@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com</groupId>
-	<artifactId>aliAwards</artifactId>
+	<artifactId>aliAwardsAPI</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>aliAwards</name>
+	<name>aliAwardsAPI</name>
 	<description>Premios Fin de Año Alicuetanos</description>
 	<url/>
 	<licenses>

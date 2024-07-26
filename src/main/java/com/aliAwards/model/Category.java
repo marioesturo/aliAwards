@@ -18,6 +18,9 @@ public class Category {
     @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
+    private String imageUrl;
+
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Nomination> nominations = new HashSet<>();
 
@@ -62,5 +65,13 @@ public class Category {
 
     public void setVotes(Set<Vote> votes) {
         this.votes = votes;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

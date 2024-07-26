@@ -1,8 +1,11 @@
 package com.aliAwards.controller;
 
+import com.aliAwards.component.JwtTokenProvider;
 import com.aliAwards.model.User;
 import com.aliAwards.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +16,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public UserController(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @PostMapping
     public User saveUser(@RequestBody User user) {
@@ -35,7 +44,19 @@ public class UserController {
     }
 
     @PostMapping("/authenticate")
-    public User authenticateUser(@RequestParam String accessCode) {
-        return userService.authenticateUser(accessCode);
+    public ResponseEntity<String> authenticateUser(@RequestParam String accessCode) {
+        try {
+            User user = userService.authenticateUser(accessCode);
+            if (user != null) {
+                System.out.println(user);
+                String token = jwtTokenProvider.generateToken(user.getEmail());
+                return ResponseEntity.ok(token);
+            } else {
+
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Codigo de Acceso Invalido");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrio un Error inesperado");
+        }
     }
 }
